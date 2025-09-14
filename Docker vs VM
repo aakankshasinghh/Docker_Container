@@ -1,0 +1,5 @@
+# Difference in Docker and VM is between the layer they virtualize.
+   The main difference is that Docker containers virtualize at the application level by sharing the host OS kernel, 
+    while VMs virtualize at the hardware level, running a full guest OS. As a result, containers are lightweight, start in seconds, and are ideal for microservices 
+     and DevOps automation.
+   VMs are heavier, take minutes to boot, but provide stronger isolation and are better for running multiple OS types on the same hardware
