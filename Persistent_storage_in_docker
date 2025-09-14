@@ -1,1 +1,7 @@
+#Hpw to achieve persistent storage in docker.
 
+Docker images are immutable and don’t change once built.
+Persistence in Docker usually refers to data created by containers. By default, when a container is removed, its data is lost. 
+To make data persistent, we use Docker volumes or bind mounts, which store data outside the container’s writable layer. 
+This way, data remains intact across container restarts or upgrades.
+If we want to persist application changes, we can also commit a container into a new image, though volumes are the best practice for data persistence
