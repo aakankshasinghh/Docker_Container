@@ -1,0 +1,86 @@
+What is Docker Networking?
+
+Docker networking enables containers to communicate with each other, with the host system, and with external networks.
+By default, each container runs in its own isolated network namespace**, and Docker provides multiple network drivers to manage connectivity.
+
+ Types of Docker Networks
+
+# 1. Bridge (default for containers)
+
+* Default network type for standalone containers.
+* Containers on the same bridge can talk to each other using **IP or container name**.
+* Example:
+
+  ```bash
+  docker network create my_bridge
+  docker run -d --name app1 --network my_bridge nginx
+  docker run -d --name app2 --network my_bridge alpine ping app1
+  ```
+
+---
+
+# 2. Host
+
+* Removes network isolation.
+* The container shares the host’s networking stack (IP, ports).
+* Good for performance, but **less secure**.
+* Example:
+
+  ```bash
+  docker run -d --network host nginx
+  ```
+
+---
+
+# 3. None
+
+* Completely disables networking.
+* The container has no access to external or other container networks.
+* Useful for **security-sensitive workloads**.
+* Example:
+
+  ```bash
+  docker run -d --network none alpine
+  ```
+
+---
+
+# 4. Overlay (multi-host networking)
+
+* Used in **Docker Swarm** or Kubernetes for cross-host communication.
+* Creates a virtual network that spans multiple Docker hosts.
+* Example:
+
+  ```bash
+  docker network create -d overlay my_overlay
+  ```
+
+---
+
+# 5. Macvlan
+
+* Assigns a **MAC address** to each container so it appears as a physical device on the network.
+* Containers get IPs directly from the physical LAN (like real machines).
+* Useful for legacy apps needing direct access to the LAN.
+
+---
+
+## 🔹 Useful Docker Networking Commands
+
+```bash
+# List networks
+docker network ls  
+
+# Inspect a network
+docker network inspect bridge  
+
+# Connect a container to a network
+docker network connect my_bridge my_container  
+
+# Disconnect a container from a network
+docker network disconnect my_bridge my_container
+
+Docker networking allows containers to communicate with each other and external systems. 
+By default, containers use the bridge network, where they can talk via IP or name.
+Other modes include host (shares host’s network), none (isolated), overlay (multi-host communication in Swarm/Kubernetes), and macvlan (direct LAN access with unique MAC). 
+These drivers make Docker flexible for different deployment needs, from local testing to large-scale distributed systems.
