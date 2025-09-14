@@ -1,0 +1,33 @@
+#Docker Image Optimization Technique
+
+1. Multi-stage Docker Build
+2. Distroless Docker Images
+
+# Multi-Stage Docker Build-
+  A multi-stage build in Docker means using multiple FROM instructions in a docker file where each stage builds upon previous one.
+  You can use a large image and then copy only the necessary artifact (binaries) into small image for running.
+  This makes final image much smaller, secure and efficient.
+
+# Stage 1: Build
+FROM maven:3.8.4-openjdk-11 as builder
+WORKDIR /app
+COPY . .
+RUN mvn clean package -DskipTests
+
+# Stage 2: Runtime
+FROM openjdk:11-jre-slim
+COPY --from=builder /app/target/myapp.jar /myapp.jar
+CMD ["java", "-jar", "/myapp.jar"]
+
+
+#Distroless Docker Images
+ Distroless are docker images that do not contain OS package manager or shell (bash, apt, yum)
+ They only include runtine environment your application needs.
+ Smaller attach surface--> more secure.
+ No eaxtra Libraries -->Lightweight
+
+FROM gcr.io/distroless/java11
+COPY myapp.jar /
+CMD ["java", "-jar", "/myapp.jar"]
+
+
